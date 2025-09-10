@@ -10,6 +10,8 @@ typedef struct Stack
 {
 	StackNode* stack;
 	unsigned int maxSize;
+	unsigned int readIndex;
+	unsigned int frontIndex;
 	unsigned int currentSize;
 } Stack;
 

@@ -12,24 +12,24 @@ int main(void)
 	//queue
 	printf("Remaining: %d bytes\n", container->maxSize - container->currentLocation);
 	initQueue(&queue, 3, container);
-	enqueue(queue, 2);
+	enqueue(queue, 10);
 	printf("Remaining: %d bytes\n", container->maxSize - container->currentLocation);
-	enqueue(queue, 5);
+	enqueue(queue, 20);
 	printf("Remaining: %d bytes\n", container->maxSize - container->currentLocation);
-	enqueue(queue, 6);
+	enqueue(queue, 30);
 	printf("Remaining: %d bytes\n", container->maxSize - container->currentLocation);
-	printPool(container);
-	dequeue(queue);
-	dequeue(queue);
+	//printPool(container);
+	printf("%d", dequeue(queue));
+	printf("%d", dequeue(queue));
 	printf("%d", dequeue(queue));
 	//stack
 	initStack(&stack, 3, container);
-	push(stack, 1);
+	push(stack, 10);
 	printf("%d", pop(stack));
 	printf("Remaining: %d bytes\n", container->maxSize - container->currentLocation);
-	push(stack, 2);
-	push(stack, 3);
-	push(stack, 4);
+	push(stack, 20);
+	push(stack, 30);
+	push(stack, 40);
 	printf("%d", pop(stack));
 	printf("Remaining: %d bytes\n", container->maxSize - container->currentLocation);
 	printf("%d", pop(stack));

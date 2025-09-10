@@ -10,8 +10,8 @@ typedef struct Queue
 {
 	QueueNode* queue;
 	unsigned int maxSize;
-	QueueNode* lastNode;
-	QueueNode* firstNode;
+	unsigned int readIndex;
+	unsigned int frontIndex;
 	unsigned int currentNode;
 } Queue;
 

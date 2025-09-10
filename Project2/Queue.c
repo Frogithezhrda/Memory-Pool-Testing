@@ -4,8 +4,8 @@ void initQueue(Queue** queue, const unsigned int amountOfNodes, PoolContainer* c
 {
 	*queue = (Queue*)allocatePool(container, (sizeof(Queue)));
 	(*queue)->queue = (QueueNode*)allocatePool(container, sizeof(QueueNode) * amountOfNodes);
-	(*queue)->firstNode = (*queue).queue[0];
-	(*queue)->lastNode = NULL;
+	(*queue)->readIndex = 0;
+	(*queue)->frontIndex = 0;
 	(*queue)->maxSize = amountOfNodes;
 	(*queue)->currentNode = 0;
 }
@@ -20,8 +20,9 @@ bool enqueue(Queue* queue, const unsigned int value)
 	newNode.value = value;
 	if (!isFull(queue))
 	{
-		queue->queue[queue->currentNode] = newNode;
+		queue->queue[queue->readIndex] = newNode;
 		queue->currentNode++;
+		queue->readIndex = (queue->readIndex + 1) % queue->maxSize;
 		return true;
 	}
 	return false;
@@ -30,21 +31,11 @@ bool enqueue(Queue* queue, const unsigned int value)
 unsigned int dequeue(Queue* queue)
 {
 	int value = 0;
-	QueueNode* node = NULL;
 	if (!isEmpty(queue))
 	{
+		value = queue->queue[queue->frontIndex].value;
 		queue->currentNode--;
-		value = queue->firstNode->value;
-		if (queue->currentNode == 0)
-		{
-			queue->queue->value = 0;
-		}
-		for (int i = 1; i < queue->currentNode + 1; i++)
-		{
-			QueueNode* tempNode = &queue->queue[i]; // 1 2 3 4 5 6 // 2
-			queue->queue[i - 1] = queue->queue[i];
-		}
-		return value;
+		queue->frontIndex = (queue->frontIndex + 1) % queue->maxSize;
 	}
 	return value;
 }
@@ -61,10 +52,10 @@ bool isFull(Queue* queue)
 
 unsigned int peekFront(Queue* queue)
 {
-	return queue->firstNode->value;
+	return queue->queue[queue->frontIndex].value;
 }
 
 unsigned int peekLast(Queue* queue)
 {
-	return queue->lastNode->value;
+	return queue->queue[(queue->readIndex - 1 + queue->maxSize) % queue->maxSize].value;
 }
