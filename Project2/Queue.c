@@ -4,7 +4,7 @@ void initQueue(Queue** queue, const unsigned int amountOfNodes, PoolContainer* c
 {
 	*queue = (Queue*)allocatePool(container, (sizeof(Queue)));
 	(*queue)->queue = (QueueNode*)allocatePool(container, sizeof(QueueNode) * amountOfNodes);
-	(*queue)->firstNode = NULL;
+	(*queue)->firstNode = (*queue).queue[0];
 	(*queue)->lastNode = NULL;
 	(*queue)->maxSize = amountOfNodes;
 	(*queue)->currentNode = 0;
@@ -21,8 +21,6 @@ bool enqueue(Queue* queue, const unsigned int value)
 	if (!isFull(queue))
 	{
 		queue->queue[queue->currentNode] = newNode;
-		queue->lastNode = &queue->queue[queue->currentNode];
-		queue->firstNode = &queue->queue[0];
 		queue->currentNode++;
 		return true;
 	}
@@ -39,9 +37,7 @@ unsigned int dequeue(Queue* queue)
 		value = queue->firstNode->value;
 		if (queue->currentNode == 0)
 		{
-			queue->queue = node;
-			queue->lastNode = &queue->queue[queue->currentNode];
-			queue->firstNode = &queue->queue[0];
+			queue->queue->value = 0;
 		}
 		for (int i = 1; i < queue->currentNode + 1; i++)
 		{

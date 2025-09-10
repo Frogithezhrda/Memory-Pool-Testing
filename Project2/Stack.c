@@ -14,17 +14,18 @@ void cleanStack(Stack** stack)
 
 bool push(Stack* stack, const unsigned int value)
 {
-	// 2, 1 2
+	// 2, 1, 2 / 3 / 5
 	StackNode newNode;
 	if(stack->maxSize > stack->currentSize)
 	{
 		//maxsize = 4, currentAmount = 3
-		for (int i = stack->currentSize; i > 0; i--)
+		for (int i = stack->currentSize - 1; i >= 0; i--)
 		{
 			stack->stack[i + 1] = stack->stack[i];
 		}
 		newNode.value = value;
 		stack->stack[0] = newNode;
+		stack->currentSize++;
 		return true;
 	}
 	return false;
@@ -32,7 +33,25 @@ bool push(Stack* stack, const unsigned int value)
 
 unsigned int pop(Stack* stack)
 {
-	return 0;
+	int value = 0;
+	// 1 2 3 / 3 / 2 
+	StackNode* node = NULL;
+	if (!isStackEmpty(stack))
+	{
+		stack->currentSize--;
+		value = stack->stack[0].value; // 1 
+		if (stack->currentSize == 0)
+		{
+			stack->stack->value = 0;
+		}
+		for (int i = 1; i < stack->currentSize + 1; i++) //
+		{
+			StackNode tempNode = stack->stack[i]; // 1 2 3 4 5 6 // 2
+			stack->stack[i - 1] = stack->stack[i];
+		}
+	}
+
+	return value;
 }
 
 bool isStackEmpty(Stack* stack)
